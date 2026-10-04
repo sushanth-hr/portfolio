@@ -1,0 +1,587 @@
+/* Fonts: Playfair Display (serif, headings) + DM Sans (clean body text) */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap");
+
+/* 1. Variables */
+:root {
+  --bg: #f6f1e7;
+  --text: #2c2621;
+  --muted: #8a7f73;
+  --line: #ddd3c2;
+  --accent: #a4553a;      /* terracotta */
+  --serif: "Playfair Display", Georgia, "Times New Roman", serif;
+  --sans: "DM Sans", "Segoe UI", system-ui, sans-serif;
+}
+
+/* 2. Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  counter-reset: sec;   /* auto-numbers the sections */
+  overflow-x: hidden;   /* decorative shapes never cause sideways scroll */
+}
+
+/* 3. Background details (all pure CSS, no extra HTML)
+   Layer 1: soft warm glows. Layer 2: thin decorative rings. Layer 3: a faint dot grid.
+   position: fixed keeps them in place while the content scrolls over them. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 8% 6%, rgba(214, 160, 120, 0.22), transparent 38%),
+    radial-gradient(circle at 95% 55%, rgba(164, 85, 58, 0.10), transparent 36%),
+    radial-gradient(circle at 12% 92%, rgba(190, 170, 120, 0.18), transparent 34%),
+    radial-gradient(circle at 88% 14%, transparent 0 168px, rgba(164, 85, 58, 0.18) 169px 170px, transparent 171px),
+    radial-gradient(circle at 88% 14%, transparent 0 238px, rgba(164, 85, 58, 0.10) 239px 240px, transparent 241px),
+    radial-gradient(circle at 6% 78%, transparent 0 118px, rgba(44, 38, 33, 0.10) 119px 120px, transparent 121px),
+    radial-gradient(circle, rgba(44, 38, 33, 0.09) 1px, transparent 1.5px);
+  background-size:
+    100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+    26px 26px;
+}
+
+/* A very light paper-grain texture (an SVG noise filter embedded as an image) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* 4. Navbar */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 56px;
+  background: rgba(246, 241, 231, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.logo {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.5rem;
+  letter-spacing: 0.01em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+
+.nav-links a {
+  position: relative;
+  padding: 6px 0;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  transition: color 0.3s;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--text);
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  width: 100%;
+}
+
+/* 5. Hero */
+h1,
+.welcome,
+section {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+h1 {
+  margin-top: 130px;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.welcome {
+  margin-top: 20px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--accent);
+}
+
+/* 6. Sections: open space, no boxes */
+section {
+  position: relative;   /* lets the big faded number below position itself */
+  display: grid;
+  margin-top: 150px;
+  margin-bottom: 150px;
+  counter-increment: sec;
+}
+
+/* A huge, very faint section number sitting behind each section.
+   It reuses the same counter as the small number above each heading. */
+section::after {
+  content: counter(sec, decimal-leading-zero);
+  position: absolute;
+  z-index: -1;
+  top: -70px;
+  font-family: var(--serif);
+  font-size: clamp(8rem, 22vw, 16rem);
+  line-height: 1;
+  color: rgba(164, 85, 58, 0.07);
+  pointer-events: none;
+  user-select: none;
+}
+
+h2 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 2.3rem;
+  line-height: 1.2;
+  margin-bottom: 28px;
+}
+
+h2::before {
+  content: counter(sec, decimal-leading-zero);
+  display: block;
+  margin-bottom: 10px;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+
+/* 7. ABOUT: aligned LEFT, narrow column, with a thin accent line */
+#about {
+  grid-template-columns: minmax(0, 640px);
+  justify-content: start;
+}
+
+#about::after {
+  right: 32px;          /* big number sits on the opposite (right) side */
+}
+
+.about1 {
+  padding-left: 28px;
+  border-left: 2px solid var(--accent);
+  font-family: var(--serif);
+  font-size: 1.55rem;
+  line-height: 1.6;
+}
+
+/* 8. PROJECTS: aligned RIGHT heading, full-width row of cards */
+#projects {
+  grid-template-columns: 1fr;
+}
+
+#projects::after {
+  left: 32px;
+}
+
+#projects h2 {
+  margin-bottom: 44px;
+  text-align: right;
+}
+
+#projects ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* 3 across on desktop, fewer on small screens */
+  gap: 24px;
+  list-style: none;
+  counter-reset: proj;
+}
+
+#projects li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 210px;
+  padding: 30px 28px;
+  counter-increment: proj;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  line-height: 1.5;
+  /* an accent line along the top that is 0px wide until hover */
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-position: top left;
+  background-size: 0 3px;
+  transition: transform 0.35s ease, box-shadow 0.35s ease,
+              border-color 0.35s ease, background-color 0.35s ease,
+              background-size 0.5s ease;
+}
+
+.project-trigger {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.project-trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+
+.project-title {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+}
+
+.project-summary {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+/* big italic project number */
+#projects li::before {
+  content: counter(proj, decimal-leading-zero);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 2.6rem;
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+/* arrow in the corner, hidden until hover */
+#projects li::after {
+  content: "\2197";
+  position: absolute;
+  right: 22px;
+  bottom: 18px;
+  font-family: var(--sans);
+  font-size: 1.4rem;
+  color: var(--accent);
+  opacity: 0;
+  transform: translate(-6px, 6px);
+  transition: opacity 0.35s, transform 0.35s;
+}
+
+#projects li:hover {
+  transform: translateY(-8px);
+  background-color: #fff;
+  border-color: rgba(164, 85, 58, 0.45);
+  box-shadow: 0 22px 40px rgba(120, 80, 50, 0.14);
+  background-size: 100% 3px;
+}
+
+#projects li:hover::after {
+  opacity: 1;
+  transform: none;
+}
+
+/* If you later write <li><h3>Title</h3><p>Description</p></li>, these style it */
+#projects li h3 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 1.35rem;
+}
+
+#projects li p {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.project-dialog {
+  width: min(760px, calc(100% - 32px));
+  max-width: none;
+  max-height: calc(100% - 32px);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 24px 80px rgba(44, 38, 33, 0.25);
+}
+
+.project-dialog::backdrop {
+  background: rgba(44, 38, 33, 0.55);
+  backdrop-filter: blur(3px);
+}
+
+.project-dialog-content {
+  position: relative;
+  padding: 42px;
+}
+
+.project-dialog-close {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.project-dialog-close:hover,
+.project-dialog-close:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.project-dialog-label {
+  margin-bottom: 8px;
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+.project-dialog h2 {
+  margin-bottom: 18px;
+  font-size: 2rem;
+}
+
+.project-dialog h2::before {
+  content: none;
+}
+
+.project-dialog-description {
+  max-width: 620px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.project-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.project-gallery img,
+.project-photo-placeholder {
+  width: 100%;
+  min-height: 170px;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.project-gallery img {
+  display: block;
+  object-fit: cover;
+}
+
+.project-photo-placeholder {
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.45);
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* 9. SKILLS: CENTRED */
+#skills {
+  text-align: center;
+  justify-items: center;
+}
+
+#skills::after {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#skills h2 {
+  margin-bottom: 36px;
+}
+
+#skills ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px 0;
+  list-style: none;
+}
+
+#skills li {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.5rem;
+}
+
+#skills li:not(:last-child)::after {
+  content: "/";
+  margin: 0 22px;
+  color: var(--accent);
+  font-style: normal;
+}
+
+/* 10. CONTACT: back to the LEFT, with a rule above */
+#contact {
+  grid-template-columns: minmax(0, 640px);
+  justify-content: start;
+  padding-top: 90px;
+  border-top: 1px solid var(--line);
+}
+
+#contact::after {
+  right: 32px;
+  top: 30px;
+}
+
+.contact1 {
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  line-height: 1.5;
+}
+
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.social-links a {
+  padding: 10px 18px;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.social-links a:hover,
+.social-links a:focus-visible {
+  background-color: var(--accent);
+  color: #fff;
+}
+
+/* 11. Footer */
+footer {
+  padding: 32px 20px 40px;
+  text-align: center;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+}
+
+/* 12. Scroll reveal (works with script.js) */
+section {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+
+section.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* 13. Mobile */
+@media (max-width: 760px) {
+  .navbar {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 20px;
+  }
+
+  .nav-links {
+    gap: 22px;
+  }
+
+  h1 {
+    margin-top: 80px;
+  }
+
+  section {
+    margin-top: 100px;
+    margin-bottom: 100px;
+  }
+
+  #projects h2 {
+    text-align: left;
+  }
+
+  .about1 {
+    font-size: 1.3rem;
+  }
+
+  .contact1 {
+    font-size: 1.35rem;
+  }
+
+  .project-dialog-content {
+    padding: 36px 24px 24px;
+  }
+
+  #skills li {
+    font-size: 1.25rem;
+  }
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sushanth portfolio</title>
+</head>
+<script src="script.js" defer></script>
+<body>
+    <nav class="navbar">
+  <div class="logo">Sushanth HR</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+    <h1>Sushanth's Portfolio</h1>
+    <p class="welcome">Welcome to my portfolio!</p>
+
+
+    <section id="about">
+        <h2>About Me</h2>
+        <p class="about1">I enjoy turning ideas into clean, functional projects, and this site is where I document that journey as I learn. I strive to think more critically. My goal is to keep growing steadily, build work I can be proud of, and contribute something of value along the way.</p> 
+    </section>
+    <section id="projects">
+        <h2>Projects</h2>
+        <ul>
+            <li>
+                <button class="project-trigger" type="button" aria-haspopup="dialog"
+                    data-title="Mine Vision"
+                    data-description="Mine Vision is an interactive safety simulator for mine vehicles. It focuses on real-time collision avoidance and zone-based hazard detection, demonstrating how vehicles can identify hazards and respond while moving through a work area."
+                    data-images="images/mine-vision.jpg">
+                    <span class="project-title">Mine Vision</span>
+                    <span class="project-summary">An interactive mine vehicle safety simulator with real-time collision avoidance and zone-based hazard detection.</span>
+                </button>
+            </li>
+            <li>
+                <button class="project-trigger" type="button" aria-haspopup="dialog"
+                    data-title="Project 2"
+                    data-description="Description of project 2."
+                    data-images="images/project-2.jpg">
+                    <span class="project-title">Project 2</span>
+                    <span class="project-summary">Description of project 2.</span>
+                </button>
+            </li>
+            <li>
+                <button class="project-trigger" type="button" aria-haspopup="dialog"
+                    data-title="Project 3"
+                    data-description="Description of project 3."
+                    data-images="images/project-3.jpg">
+                    <span class="project-title">Project 3</span>
+                    <span class="project-summary">Description of project 3.</span>
+                </button>
+            </li>
+        </ul>
+    </section>
+    <dialog class="project-dialog" id="project-dialog" aria-labelledby="project-dialog-title">
+        <div class="project-dialog-content">
+            <button class="project-dialog-close" type="button" aria-label="Close project details">&times;</button>
+            <p class="project-dialog-label">PROJECT DETAILS</p>
+            <h2 id="project-dialog-title"></h2>
+            <p class="project-dialog-description" id="project-dialog-description"></p>
+            <div class="project-gallery" id="project-gallery" aria-label="Project photos"></div>
+        </div>
+    </dialog>
+    <section id="skills">
+        <h2>Skills</h2>
+        <ul>
+            <li>HTML, CSS, JavaScript</li>
+            <li>React, Node.js</li>
+            <li>Python, Java, C++</li>
+        </ul>
+    </section>
+    <section id="contact">
+        <h2>Contact</h2>
+        <p class="contact1">You can reach me at sushanth@example.com</p>
+        <div class="social-links">
+            <a href="https://github.com/your-username" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://www.linkedin.com/in/your-username/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+    </section>
+    <footer>
+        <p class="copyright1">&copy; 2026 Sushanth. All rights reserved.</p>
+    </footer>
+</body>
+</html>
